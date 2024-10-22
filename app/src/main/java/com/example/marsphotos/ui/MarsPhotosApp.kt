@@ -18,6 +18,7 @@
 
 package com.example.marsphotos.ui
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,6 +36,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.marsphotos.R
 import com.example.marsphotos.ui.screens.HomeScreen
 import com.example.marsphotos.ui.screens.MarsViewModel
+import com.example.marsphotos.ui.screens.PicsumHomeScreen
+import com.example.marsphotos.ui.screens.PicsumViewModel
 
 @Composable
 fun MarsPhotosApp() {
@@ -46,11 +49,23 @@ fun MarsPhotosApp() {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-            val marsViewModel: MarsViewModel = viewModel()
-            HomeScreen(
-                marsUiState = marsViewModel.marsUiState,
-                contentPadding = it
-            )
+            // Colocamos ambas as telas dentro de uma coluna para ficarem empilhadas verticalmente
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                // Primeira tela - HomeScreen
+                val marsViewModel: MarsViewModel = viewModel()
+                HomeScreen(
+                    marsUiState = marsViewModel.marsUiState,
+                    contentPadding = it
+                )
+
+                val picsumViewModel: PicsumViewModel = viewModel()
+                PicsumHomeScreen(
+                    picsumUiState = picsumViewModel.picsumUiState,
+                    contentPadding = it
+                )
+            }
         }
     }
 }
