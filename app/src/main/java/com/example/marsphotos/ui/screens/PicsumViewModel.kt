@@ -75,6 +75,7 @@ class PicsumViewModel : ViewModel() {
         }
     }
 
+
     /**
      * [PicsumPhoto].
      */
