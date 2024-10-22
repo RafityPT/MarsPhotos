@@ -15,6 +15,7 @@
  */
 package com.example.marsphotos.ui.screens
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -35,6 +36,10 @@ class PicsumViewModel : ViewModel() {
     var picsumUiState: PicsumUiState by mutableStateOf(PicsumUiState.Loading)
         private set
 
+    // Varivel para que se possa dar gray e blur a imagem corrente
+    private var currentPhoto: PicsumPhoto? = null
+
+    private var tempUrl: String? = null
     /**
      * Call getMarsPhotos() on init so we can display status immediately.
      */
@@ -50,8 +55,41 @@ class PicsumViewModel : ViewModel() {
         viewModelScope.launch {
             picsumUiState = PicsumUiState.Loading
 
-            val listPicsum = PicsumApi.retrofitService.getListPicsumPhotos()
-            picsumUiState = PicsumUiState.Success( "Success: ${listPicsum.size} Picsum photos retrieved", listPicsum.random())
+            val listPicsum = PicsumApi.retrofitService.getListPicsumPhotosPage4()
+            //Log.d("lista", listPicsum.toString())
+            currentPhoto = listPicsum.random()
+            picsumUiState = PicsumUiState.Success( "Success: ${listPicsum.size} Picsum photos retrieved", currentPhoto  ?:  listPicsum.random())
         }
     }
+
+    /**
+     * [PicsumPhoto].
+     */
+    fun getBlurPhotos() {
+        viewModelScope.launch {
+            picsumUiState = PicsumUiState.Loading
+            val picsum = PicsumApi.retrofitService.getPhotoById(currentPhoto!!.id)
+            currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "?blur=10"
+            picsumUiState = PicsumUiState.Success( "Success: Picsum photo Blurred", currentPhoto!!)
+            currentPhoto = picsum
+        }
+    }
+
+    /**
+     * [PicsumPhoto].
+     */
+    fun getGrayPhotos() {
+        viewModelScope.launch {
+            picsumUiState = PicsumUiState.Loading
+            val picsum = PicsumApi.retrofitService.getPhotoById(currentPhoto!!.id)
+            currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "?grayscale"
+            picsumUiState = PicsumUiState.Success( "Success: Picsum photo Grayscaled", currentPhoto!!)
+            currentPhoto = picsum
+        }
+    }
+
+    fun updatePhotos() {
+        getPicsumPhotos()
+    }
+
 }

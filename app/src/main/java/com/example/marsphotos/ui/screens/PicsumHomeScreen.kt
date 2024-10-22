@@ -34,6 +34,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -78,7 +79,11 @@ fun PicsumResultScreen(photos: String, randomPhoto: PicsumPhoto, modifier: Modif
                 .data(randomPhoto.imgSrc)
                 .crossfade(true)
                 .build(),
-            contentDescription = "A photo", )
+            contentDescription = "A photo",
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 100.dp, max = 410.dp)
+                .padding(bottom = 15.dp))
     }
 }
 

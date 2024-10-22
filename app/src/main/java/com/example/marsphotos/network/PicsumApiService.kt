@@ -5,6 +5,7 @@ import retrofit2.http.GET
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import retrofit2.http.Path
 
 
 private const val BASE_URL = "https://picsum.photos"
@@ -17,9 +18,21 @@ private val retrofit = Retrofit.Builder()
 
 
 interface PicsumApiService {
-    //este get nao sei se esta correto
+    //vamos buscar a pagina 4 agora, para ser diferente
     @GET("/v2/list")
     suspend fun getListPicsumPhotos(): List<PicsumPhoto>
+
+    @GET("/v2/list?page=4")
+    suspend fun getListPicsumPhotosPage4(): List<PicsumPhoto>
+
+//    @GET("/id/{id}/{width}/{height}/?blur")
+//    suspend fun getBlurPhoto(@Path("id") id: String, @Path("width") width: Int, @Path("height") height: Int): PicsumPhoto
+//
+//    @GET("/id/{id}/?grayscale")
+//    suspend fun getGrayPhoto(@Path("id") id: String): PicsumPhoto
+
+    @GET("/id/{id}/info")
+    suspend fun getPhotoById(@Path("id") id: String): PicsumPhoto
 }
 
 

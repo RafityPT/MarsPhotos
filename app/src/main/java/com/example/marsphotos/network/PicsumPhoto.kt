@@ -10,5 +10,5 @@ data class PicsumPhoto(
     val width: Int,
     val height: Int,
     val url: String,
-    @SerialName("download_url") val imgSrc: String // O campo "img_src" do seu código original está representado como "download_url" no JSON
+    @SerialName("download_url") var imgSrc: String
 )

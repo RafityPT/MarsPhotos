@@ -35,6 +35,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -43,7 +44,7 @@ import com.example.marsphotos.network.MarsPhoto
 @Composable
 fun HomeScreen(
     marsUiState: MarsUiState,
-    modifier: Modifier = Modifier.padding(top = 120.dp),
+    modifier: Modifier = Modifier,//.padding(top = 30.dp),
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     when (marsUiState) {
@@ -79,7 +80,11 @@ fun ResultScreen(photos: String, randomPhoto: MarsPhoto, modifier: Modifier = Mo
                 .data(randomPhoto.imgSrc)
                 .crossfade(true)
                 .build(),
-            contentDescription = "A photo", )
+            contentDescription = "A photo",
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 200.dp, max = 300.dp)
+                .padding(bottom = 10.dp))
     }
 }
 

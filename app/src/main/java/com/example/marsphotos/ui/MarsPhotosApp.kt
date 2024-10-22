@@ -18,8 +18,15 @@
 
 package com.example.marsphotos.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -29,9 +36,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.marsphotos.R
 import com.example.marsphotos.ui.screens.HomeScreen
@@ -49,22 +59,65 @@ fun MarsPhotosApp() {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-            // Colocamos ambas as telas dentro de uma coluna para ficarem empilhadas verticalmente
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Primeira tela - HomeScreen
+                //Picsum Photos
+                val picsumViewModel: PicsumViewModel = viewModel()
+                PicsumHomeScreen(
+                    picsumUiState = picsumViewModel.picsumUiState,
+                    contentPadding = it
+                )
+
+                //Mars Photos
                 val marsViewModel: MarsViewModel = viewModel()
                 HomeScreen(
                     marsUiState = marsViewModel.marsUiState,
                     contentPadding = it
                 )
 
-                val picsumViewModel: PicsumViewModel = viewModel()
-                PicsumHomeScreen(
-                    picsumUiState = picsumViewModel.picsumUiState,
-                    contentPadding = it
-                )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Row with three buttons
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(
+                        onClick = {
+                            picsumViewModel.updatePhotos()
+                            marsViewModel.updatePhotos()
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = "Roll")
+                    }
+
+                    Spacer(modifier = Modifier.weight(0.1f))
+
+                    Button(
+                        onClick = {
+                            picsumViewModel.getBlurPhotos()
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = "Blur")
+                    }
+
+                    Spacer(modifier = Modifier.weight(0.1f))
+
+                    Button(
+                        onClick = {
+                            picsumViewModel.getGrayPhotos()
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = "Gray")
+                    }
+                }
             }
         }
     }
