@@ -55,8 +55,9 @@ class PicsumViewModel : ViewModel() {
         viewModelScope.launch {
             picsumUiState = PicsumUiState.Loading
 
-            val listPicsum = PicsumApi.retrofitService.getListPicsumPhotosPage4()
+//            val listPicsum = PicsumApi.retrofitService.getListPicsumPhotosPage4()
             //Log.d("lista", listPicsum.toString())
+            val listPicsum = PicsumApi.retrofitService.getListPicsumPhotos()
             currentPhoto = listPicsum.random()
             picsumUiState = PicsumUiState.Success( "Success: ${listPicsum.size} Picsum photos retrieved", currentPhoto  ?:  listPicsum.random())
         }
@@ -69,9 +70,15 @@ class PicsumViewModel : ViewModel() {
         viewModelScope.launch {
             picsumUiState = PicsumUiState.Loading
             val picsum = PicsumApi.retrofitService.getPhotoById(currentPhoto!!.id)
-            currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "?blur=10"
+            if (currentPhoto!!.imgSrc.contains("grayscale")) {
+                currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "&blur=10"
+
+            } else {
+                currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "?blur=10"
+
+            }
             picsumUiState = PicsumUiState.Success( "Success: Picsum photo Blurred", currentPhoto!!)
-            currentPhoto = picsum
+            //currentPhoto = picsum
         }
     }
 
@@ -83,9 +90,14 @@ class PicsumViewModel : ViewModel() {
         viewModelScope.launch {
             picsumUiState = PicsumUiState.Loading
             val picsum = PicsumApi.retrofitService.getPhotoById(currentPhoto!!.id)
-            currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "?grayscale"
+            if (currentPhoto!!.imgSrc.contains("blur")) {
+                currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "&grayscale"
+            } else {
+                currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "?grayscale"
+            }
+            //currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "?grayscale"
             picsumUiState = PicsumUiState.Success( "Success: Picsum photo Grayscaled", currentPhoto!!)
-            currentPhoto = picsum
+            //currentPhoto = picsum
         }
     }
 

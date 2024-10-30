@@ -18,8 +18,8 @@ private val retrofit = Retrofit.Builder()
 
 
 interface PicsumApiService {
-    //vamos buscar a pagina 4 agora, para ser diferente
-    @GET("/v2/list")
+
+    @GET("/v2/list?page=5&limit=100")
     suspend fun getListPicsumPhotos(): List<PicsumPhoto>
 
     @GET("/v2/list?page=4")
