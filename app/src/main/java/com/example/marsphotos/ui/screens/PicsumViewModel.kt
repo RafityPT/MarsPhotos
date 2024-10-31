@@ -46,7 +46,7 @@ class PicsumViewModel : ViewModel() {
 
     // Varivel para que se possa dar gray e blur a imagem corrente
     private var currentPhoto: PicsumPhoto? = null
-
+    private var rolls: Int = 0
     private var tempUrl: String? = null
 
     //private val db = FirebaseDatabase.getInstance()
@@ -71,6 +71,7 @@ class PicsumViewModel : ViewModel() {
             //Log.d("lista", listPicsum.toString())
             val listPicsum = PicsumApi.retrofitService.getListPicsumPhotos()
             currentPhoto = listPicsum.random()
+            updateRoll()
             picsumUiState = PicsumUiState.Success( "Success: ${listPicsum.size} Picsum photos retrieved", currentPhoto  ?:  listPicsum.random())
         }
     }
@@ -87,7 +88,6 @@ class PicsumViewModel : ViewModel() {
 
             } else {
                 currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "?blur=10"
-
             }
             picsumUiState = PicsumUiState.Success( "Success: Picsum photo Blurred", currentPhoto!!)
             //currentPhoto = picsum
@@ -149,6 +149,39 @@ class PicsumViewModel : ViewModel() {
             Toast.makeText(getApplicationContext(), "Current photo is null. Cannot save.", Toast.LENGTH_SHORT).show()
         }
     }
+
+    @SuppressLint("RestrictedApi")
+    fun updateRoll() {
+        dbRef.child("rolls").get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val rollsSnapshot = task.result
+
+                if (rollsSnapshot != null && rollsSnapshot.exists()) {
+                    rolls = rollsSnapshot.getValue(Int::class.java) ?: 0
+                }
+
+                // Incrementa o roll
+                rolls = rolls + 1
+
+                // Salva o novo valor de rolls
+                dbRef.child("rolls").setValue(rolls).addOnCompleteListener { saveTask ->
+                    if (saveTask.isSuccessful) {
+                        Log.d("Firebase", "Roll saved successfully: $rolls")
+                    } else {
+                        Log.e("Firebase", "Failed to save roll", saveTask.exception)
+                    }
+                }
+            } else {
+                Log.e("Firebase", "Failed to retrieve rolls", task.exception)
+            }
+        }
+    }
+
+    fun getRolls(): Int {
+        return rolls
+    }
+
+
 
 
 }

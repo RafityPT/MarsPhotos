@@ -78,7 +78,12 @@ fun MarsPhotosApp() {
                     contentPadding = it
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "Rolls: ${picsumViewModel.getRolls()}",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.Start)
+                )
 
                 // Row with three buttons
                 Row(
@@ -91,6 +96,7 @@ fun MarsPhotosApp() {
                         onClick = {
                             picsumViewModel.updatePhotos()
                             marsViewModel.updatePhotos()
+                            //picsumViewModel.updateRoll()
                         },
                         modifier = Modifier.weight(1f)
                     ) {
