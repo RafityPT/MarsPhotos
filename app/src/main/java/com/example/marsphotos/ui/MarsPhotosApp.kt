@@ -96,7 +96,6 @@ fun MarsPhotosApp() {
                         onClick = {
                             picsumViewModel.updatePhotos()
                             marsViewModel.updatePhotos()
-                            //picsumViewModel.updateRoll()
                         },
                         modifier = Modifier.weight(1f)
                     ) {
@@ -125,6 +124,7 @@ fun MarsPhotosApp() {
                         Text(text = "Gray")
                     }
                 }
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -134,6 +134,7 @@ fun MarsPhotosApp() {
                     Button(
                         onClick = {
                             picsumViewModel.saveImage()
+                            marsViewModel.saveImage()
                         },
                         modifier = Modifier.weight(1f)
                     ) {
@@ -144,6 +145,8 @@ fun MarsPhotosApp() {
 
                     Button(
                         onClick = {
+                            picsumViewModel.load()
+                            marsViewModel.load()
                         },
                         modifier = Modifier.weight(1f)
                     ) {

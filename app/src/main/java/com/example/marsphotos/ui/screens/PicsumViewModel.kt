@@ -46,8 +46,9 @@ class PicsumViewModel : ViewModel() {
 
     // Varivel para que se possa dar gray e blur a imagem corrente
     private var currentPhoto: PicsumPhoto? = null
+    //variavel para saber o id a ultima  imagem salva
+    private var lastSaved: String? = null
     private var rolls: Int = 0
-    private var tempUrl: String? = null
 
     //private val db = FirebaseDatabase.getInstance()
     private val db = Firebase.database("https://marsphotoscm-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -67,8 +68,6 @@ class PicsumViewModel : ViewModel() {
         viewModelScope.launch {
             picsumUiState = PicsumUiState.Loading
 
-//            val listPicsum = PicsumApi.retrofitService.getListPicsumPhotosPage4()
-            //Log.d("lista", listPicsum.toString())
             val listPicsum = PicsumApi.retrofitService.getListPicsumPhotos()
             currentPhoto = listPicsum.random()
             updateRoll()
@@ -90,7 +89,6 @@ class PicsumViewModel : ViewModel() {
                 currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "?blur=10"
             }
             picsumUiState = PicsumUiState.Success( "Success: Picsum photo Blurred", currentPhoto!!)
-            //currentPhoto = picsum
         }
     }
 
@@ -107,9 +105,7 @@ class PicsumViewModel : ViewModel() {
             } else {
                 currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "?grayscale"
             }
-            //currentPhoto!!.imgSrc = currentPhoto!!.imgSrc + "?grayscale"
             picsumUiState = PicsumUiState.Success( "Success: Picsum photo Grayscaled", currentPhoto!!)
-            //currentPhoto = picsum
         }
     }
 
@@ -119,24 +115,14 @@ class PicsumViewModel : ViewModel() {
 
     /************************************************************************************************************************/
 
-    // Função para salvar a imagem atual no Firebase Database
-//    fun saveImage(currentPhoto: PicsumPhoto) {
-//        db.child("savedPhotos").child(currentPhoto.id).setValue(currentPhoto)
-//            .addOnSuccessListener {
-//                // Adiciona código para notificar que a imagem foi salva com sucesso
-//            }
-//            .addOnFailureListener { exception ->
-//                // Adiciona código para lidar com falha ao salvar a imagem
-//            }
-//    }
-
     @SuppressLint("RestrictedApi")
     fun saveImage() {
         // Verifica se currentPhoto não é nulo
         currentPhoto?.let { photo ->
             // Gera um novo ID para a imagem a ser salva
-            dbRef.child("images").child(photo.id).setValue(photo).addOnCompleteListener { task ->
+            dbRef.child("images").child("picsum").child(photo.id).setValue(photo).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    lastSaved = currentPhoto!!.id
                     Log.d("Firebase", "Image saved successfully with ID: ${photo.id}")
                     Toast.makeText(getApplicationContext(), "Image saved successfully!", Toast.LENGTH_SHORT).show()
                 } else {
@@ -181,6 +167,32 @@ class PicsumViewModel : ViewModel() {
         return rolls
     }
 
+    @SuppressLint("RestrictedApi")
+    fun load() {
+        lastSaved?.let { id ->
+            dbRef.child("images").child("picsum").child(id).get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val snapshot = task.result
+                    if (snapshot != null && snapshot.exists()) {
+                        currentPhoto = snapshot.getValue(PicsumPhoto::class.java)
+                        Log.d("snapshot", currentPhoto.toString())
+
+                        picsumUiState = PicsumUiState.Success( "Success: Loaded Picture with Id ${id} from Firebase", currentPhoto!!)
+                        Toast.makeText(getApplicationContext(), "Picsum image loaded successfully!", Toast.LENGTH_SHORT).show()
+                    }  else {
+                        Log.e("Firebase", "Image not found for ID: ${id}")
+                        Toast.makeText(getApplicationContext(), "Picsum image not found", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Log.e("Firebase", "Failed to retrieve image", task.exception)
+                    Toast.makeText(getApplicationContext(), "Failed to retrieve image", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } ?: run {
+            Log.e("Firebase", "No last saved image to fetch.")
+            Toast.makeText(getApplicationContext(), "No last saved image to fetch", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 
 
