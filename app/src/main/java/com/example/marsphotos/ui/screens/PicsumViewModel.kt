@@ -15,7 +15,10 @@
  */
 package com.example.marsphotos.ui.screens
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -23,6 +26,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.marsphotos.network.PicsumApi
 import com.example.marsphotos.network.PicsumPhoto
+import com.firebase.ui.auth.AuthUI.getApplicationContext
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.launch
 import com.google.firebase.database.FirebaseDatabase
@@ -45,7 +49,8 @@ class PicsumViewModel : ViewModel() {
 
     private var tempUrl: String? = null
 
-    private val db = FirebaseDatabase.getInstance()
+    //private val db = FirebaseDatabase.getInstance()
+    private val db = Firebase.database("https://marsphotoscm-default-rtdb.europe-west1.firebasedatabase.app/")
     val dbRef = db.reference
     /**
      * Call getMarsPhotos() on init so we can display status immediately.
@@ -125,19 +130,23 @@ class PicsumViewModel : ViewModel() {
 //            }
 //    }
 
+    @SuppressLint("RestrictedApi")
     fun saveImage() {
         // Verifica se currentPhoto não é nulo
         currentPhoto?.let { photo ->
             // Gera um novo ID para a imagem a ser salva
-            dbRef.child(photo.id).setValue(photo).addOnCompleteListener { task ->
+            dbRef.child("images").child(photo.id).setValue(photo).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("Firebase", "Image saved successfully with ID: ${photo.id}")
+                    Toast.makeText(getApplicationContext(), "Image saved successfully!", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.e("Firebase", "Failed to save image", task.exception)
+                    Toast.makeText(getApplicationContext(), "Failed to save image.", Toast.LENGTH_SHORT).show()
                 }
             }
         } ?: run {
             Log.e("Firebase", "Current photo is null. Cannot save.")
+            Toast.makeText(getApplicationContext(), "Current photo is null. Cannot save.", Toast.LENGTH_SHORT).show()
         }
     }
 
