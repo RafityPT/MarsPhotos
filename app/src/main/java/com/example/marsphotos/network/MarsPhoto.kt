@@ -5,8 +5,20 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MarsPhoto(
-    val id: String,
+    var id: String = "",
     @SerialName(value = "img_src")
-    val imgSrc: String
+    var imgSrc: String = ""
+) {
+    // Getters
+    fun getMarsId(): String = id
+    fun getMarsImgSrc(): String = imgSrc
 
-)
+    // Setters
+    fun setMarsId(newId: String) {
+        id = newId
+    }
+
+    fun setMarsImgSrc(newImgSrc: String) {
+        imgSrc = newImgSrc
+    }
+}
