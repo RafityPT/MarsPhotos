@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "14168745959",
+    "firebase_url": "https://marsphotoscm-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "marsphotoscm",
+    "storage_bucket": "marsphotoscm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14168745959:android:6ae5a191341b80898e7f42",
+        "android_client_info": {
+          "package_name": "com.example.marsphotos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "14168745959-kd67a62mv288jq3jee76rdhkbqv5fvae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLlizbwChJUgHqBWZ8XvCS5JYa8bDZEIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14168745959-kd67a62mv288jq3jee76rdhkbqv5fvae.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

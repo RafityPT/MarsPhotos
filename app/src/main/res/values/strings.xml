@@ -20,4 +20,6 @@
     <string name="retry">Retry</string>
     <string name="loading">Loading</string>
     <string name="mars_photo">Mars photo</string>
+    <string name="default_web_client_id"
+        translatable="false">webClientId.apps.googleusercontent.com</string>
 </resources>
