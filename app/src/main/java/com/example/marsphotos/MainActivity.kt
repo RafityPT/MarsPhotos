@@ -16,6 +16,7 @@
 
 package com.example.marsphotos
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,8 +26,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.marsphotos.ui.MarsPhotosApp
 import com.example.marsphotos.ui.theme.MarsPhotosTheme
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
