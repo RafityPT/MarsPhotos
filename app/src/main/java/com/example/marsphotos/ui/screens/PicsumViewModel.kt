@@ -23,7 +23,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.marsphotos.network.PicsumApi
 import com.example.marsphotos.network.PicsumPhoto
+import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.launch
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 sealed interface PicsumUiState {
     data class Success(val photos: String, val randomPicsumPhoto : PicsumPhoto) : PicsumUiState
@@ -40,6 +44,9 @@ class PicsumViewModel : ViewModel() {
     private var currentPhoto: PicsumPhoto? = null
 
     private var tempUrl: String? = null
+
+    private val db = FirebaseDatabase.getInstance()
+    val dbRef = db.reference
     /**
      * Call getMarsPhotos() on init so we can display status immediately.
      */
@@ -104,5 +111,35 @@ class PicsumViewModel : ViewModel() {
     fun updatePhotos() {
         getPicsumPhotos()
     }
+
+    /************************************************************************************************************************/
+
+    // Função para salvar a imagem atual no Firebase Database
+//    fun saveImage(currentPhoto: PicsumPhoto) {
+//        db.child("savedPhotos").child(currentPhoto.id).setValue(currentPhoto)
+//            .addOnSuccessListener {
+//                // Adiciona código para notificar que a imagem foi salva com sucesso
+//            }
+//            .addOnFailureListener { exception ->
+//                // Adiciona código para lidar com falha ao salvar a imagem
+//            }
+//    }
+
+    fun saveImage() {
+        // Verifica se currentPhoto não é nulo
+        currentPhoto?.let { photo ->
+            // Gera um novo ID para a imagem a ser salva
+            dbRef.child(photo.id).setValue(photo).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Firebase", "Image saved successfully with ID: ${photo.id}")
+                } else {
+                    Log.e("Firebase", "Failed to save image", task.exception)
+                }
+            }
+        } ?: run {
+            Log.e("Firebase", "Current photo is null. Cannot save.")
+        }
+    }
+
 
 }

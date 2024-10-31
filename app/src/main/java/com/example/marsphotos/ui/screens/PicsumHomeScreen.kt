@@ -82,7 +82,7 @@ fun PicsumResultScreen(photos: String, randomPhoto: PicsumPhoto, modifier: Modif
             contentDescription = "A photo",
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 100.dp, max = 410.dp)
+                .heightIn(min = 100.dp, max = 300.dp)
                 .padding(bottom = 15.dp))
     }
 }

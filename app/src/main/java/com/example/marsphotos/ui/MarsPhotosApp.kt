@@ -118,6 +118,31 @@ fun MarsPhotosApp() {
                         Text(text = "Gray")
                     }
                 }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(
+                        onClick = {
+                            picsumViewModel.saveImage()
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = "Save")
+                    }
+
+                    Spacer(modifier = Modifier.weight(0.1f))
+
+                    Button(
+                        onClick = {
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(text = "Load")
+                    }
+                }
             }
         }
     }
