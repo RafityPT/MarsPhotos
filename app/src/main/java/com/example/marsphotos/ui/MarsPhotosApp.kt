@@ -19,6 +19,7 @@
 package com.example.marsphotos.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -72,108 +73,108 @@ fun MarsPhotosApp() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                CameraCompose()
+                Box (modifier = Modifier.weight(0.25f)) {
+                    CameraCompose()
+                }
+
 
                 //Spacer(modifier = Modifier.size(80.dp))
                 //Picsum Photos
                 val picsumViewModel: PicsumViewModel = viewModel()
-                PicsumHomeScreen(
-                    picsumUiState = picsumViewModel.picsumUiState,
-                    contentPadding = it
-                )
+
+                Box (modifier = Modifier.weight(0.25f)) {
+                    PicsumHomeScreen(
+                        picsumUiState = picsumViewModel.picsumUiState,
+                        contentPadding = it
+                    )
+                }
 
                 //Mars Photos
                 val marsViewModel: MarsViewModel = viewModel()
-                HomeScreen(
-                    marsUiState = marsViewModel.marsUiState,
-                    contentPadding = it
-                )
-
-                Text(
-                    text = "Rolls: ${picsumViewModel.getRolls()}",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.Start)
-                )
-
-                // Row with three buttons
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Button(
-                        onClick = {
-                            picsumViewModel.updatePhotos()
-                            marsViewModel.updatePhotos()
-                        },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(text = "Roll")
-                    }
-
-                    Spacer(modifier = Modifier.weight(0.1f))
-
-                    Button(
-                        onClick = {
-                            picsumViewModel.getBlurPhotos()
-                        },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(text = "Blur")
-                    }
-
-                    Spacer(modifier = Modifier.weight(0.1f))
-
-                    Button(
-                        onClick = {
-                            picsumViewModel.getGrayPhotos()
-                        },
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(text = "Gray")
-                    }
+                Box (modifier = Modifier.weight(0.25f)) {
+                    HomeScreen(
+                        marsUiState = marsViewModel.marsUiState,
+                        contentPadding = it
+                    )
                 }
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 10.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Button(
-                        onClick = {
-                            picsumViewModel.saveImage()
-                            marsViewModel.saveImage()
-                        },
-                        modifier = Modifier.weight(1f)
+                Box (modifier = Modifier.weight(0.125f)) {
+                    Text(
+                        text = "Rolls: ${picsumViewModel.getRolls()}",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+
+                    // Row with three buttons
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        Text(text = "Save")
+                        Button(
+                            onClick = {
+                                picsumViewModel.updatePhotos()
+                                marsViewModel.updatePhotos()
+                            },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(text = "Roll")
+                        }
+
+                        Spacer(modifier = Modifier.weight(0.1f))
+
+                        Button(
+                            onClick = {
+                                picsumViewModel.getBlurPhotos()
+                            },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(text = "Blur")
+                        }
+
+                        Spacer(modifier = Modifier.weight(0.1f))
+
+                        Button(
+                            onClick = {
+                                picsumViewModel.getGrayPhotos()
+                            },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(text = "Gray")
+                        }
                     }
+                }
+                Box (modifier = Modifier.weight(0.125f)) {
 
-                    Spacer(modifier = Modifier.weight(0.1f))
-
-                    Button(
-                        onClick = {
-                            picsumViewModel.load()
-                            marsViewModel.load()
-                        },
-                        modifier = Modifier.weight(1f)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 10.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        Text(text = "Load")
-                    }
+                        Button(
+                            onClick = {
+                                picsumViewModel.saveImage()
+                                marsViewModel.saveImage()
+                            },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(text = "Save")
+                        }
 
-//                    Spacer(modifier = Modifier.weight(0.1f))
-//
-//                    Button(
-//                        onClick = {
-//
-//                        },
-//                        modifier = Modifier.weight(1f)
-//                    ) {
-//                        Text(text = "Picture")
-//                    }
+                        Spacer(modifier = Modifier.weight(0.1f))
+
+                        Button(
+                            onClick = {
+                                picsumViewModel.load()
+                                marsViewModel.load()
+                            },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(text = "Load")
+                        }
+                    }
                 }
             }
         }

@@ -66,10 +66,14 @@ class MarsViewModel : ViewModel() {
     private fun getMarsPhotos() {
         viewModelScope.launch {
             marsUiState = MarsUiState.Loading
-
+            //var listResult = null
             val listResult = MarsApi.retrofitService.getPhotos()
-            currentMarsPhoto = listResult.random()
-            marsUiState = MarsUiState.Success( "Success: ${listResult.size} Mars photos retrieved", currentMarsPhoto!!)
+            if (listResult != null) {
+                currentMarsPhoto = listResult.random()
+                marsUiState = MarsUiState.Success( "Success: ${listResult.size} Mars photos retrieved", currentMarsPhoto!!)
+            } else {
+                marsUiState = MarsUiState.Error
+            }
         }
     }
 

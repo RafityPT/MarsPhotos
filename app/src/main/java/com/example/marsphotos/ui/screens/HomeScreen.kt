@@ -96,9 +96,12 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
-        )
-        Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
+            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = "",
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 50.dp)
+                .padding(bottom = 10.dp))
+        Text(text = stringResource(R.string.loading_failed), modifier = Modifier.size(50.dp))
     }
 }
 

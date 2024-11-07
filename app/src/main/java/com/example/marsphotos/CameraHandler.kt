@@ -14,7 +14,6 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -78,47 +77,58 @@ fun CameraCompose(modifier: Modifier = Modifier) {
     }
 
     if (hasCameraPermission) {
-        Box {
-            // Visualização da câmera
-            CameraPreviewView(
-                imageCapture = { imageCapture = it },
-                modifier = Modifier // Ajusta a altura da visualização da câmera
-            )
 
-            // Botão alinhado no topo da imagem, centralizado
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-            ) {
-                Button(
-                    onClick = {
-                        imageCapture?.let { capture ->
-                            val outputOptions = ImageCapture.OutputFileOptions.Builder(file).build()
+        Column {
+            Box(modifier = Modifier.weight(0.25f)) {
+                // Visualização da câmera
+                CameraPreviewView(
+                    imageCapture = { imageCapture = it },
+                    modifier = Modifier // Ajusta a altura da visualização da câmera
+                )
 
-                            capture.takePicture(
-                                outputOptions,
-                                ContextCompat.getMainExecutor(context),
-                                object : ImageCapture.OnImageSavedCallback {
-                                    override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                                        capturedImageUri = uri
-                                        Toast.makeText(context, "Photo captured!", Toast.LENGTH_SHORT)
-                                            .show()
-                                        Log.d("Gravado", "Foto gravada: $capturedImageUri e no $outputFileResults")
-                                    }
-
-                                    override fun onError(exception: ImageCaptureException) {
-                                        Log.e(
-                                            "CameraCompose",
-                                            "Image capture failed: ${exception.message}",
-                                            exception
-                                        )
-                                    }
-                                }
-                            )
-                        }
-                    },
+                // Botão alinhado no topo da imagem, centralizado
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
                 ) {
-                    Text("Capture")  // Texto dentro do botão
+                    Button(
+                        onClick = {
+                            imageCapture?.let { capture ->
+                                val outputOptions =
+                                    ImageCapture.OutputFileOptions.Builder(file).build()
+
+                                capture.takePicture(
+                                    outputOptions,
+                                    ContextCompat.getMainExecutor(context),
+                                    object : ImageCapture.OnImageSavedCallback {
+                                        override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                                            capturedImageUri = uri
+                                            Toast.makeText(
+                                                context,
+                                                "Photo captured!",
+                                                Toast.LENGTH_SHORT
+                                            )
+                                                .show()
+                                            Log.d(
+                                                "Gravado",
+                                                "Foto gravada: $capturedImageUri e no $outputFileResults"
+                                            )
+                                        }
+
+                                        override fun onError(exception: ImageCaptureException) {
+                                            Log.e(
+                                                "CameraCompose",
+                                                "Image capture failed: ${exception.message}",
+                                                exception
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+                        },
+                    ) {
+                        Text("Capture")  // Texto dentro do botão
+                    }
                 }
             }
         }
@@ -127,7 +137,7 @@ fun CameraCompose(modifier: Modifier = Modifier) {
 
 @Composable
 fun CameraPreviewView(
-    modifier: Modifier = Modifier.size(100.dp),
+    modifier: Modifier = Modifier.size(80.dp),
     imageCapture: (ImageCapture) -> Unit
 ) {
     val context = LocalContext.current
