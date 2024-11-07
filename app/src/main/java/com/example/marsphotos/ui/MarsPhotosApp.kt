@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +37,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -44,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.marsphotos.CameraCompose
 import com.example.marsphotos.R
 import com.example.marsphotos.ui.screens.HomeScreen
 import com.example.marsphotos.ui.screens.MarsViewModel
@@ -53,6 +59,7 @@ import com.example.marsphotos.ui.screens.PicsumViewModel
 @Composable
 fun MarsPhotosApp() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    var showCamera by remember { mutableStateOf(false) }
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = { MarsTopAppBar(scrollBehavior = scrollBehavior) }
@@ -64,6 +71,10 @@ fun MarsPhotosApp() {
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
+                CameraCompose()
+
+                //Spacer(modifier = Modifier.size(80.dp))
                 //Picsum Photos
                 val picsumViewModel: PicsumViewModel = viewModel()
                 PicsumHomeScreen(
@@ -152,6 +163,17 @@ fun MarsPhotosApp() {
                     ) {
                         Text(text = "Load")
                     }
+
+//                    Spacer(modifier = Modifier.weight(0.1f))
+//
+//                    Button(
+//                        onClick = {
+//
+//                        },
+//                        modifier = Modifier.weight(1f)
+//                    ) {
+//                        Text(text = "Picture")
+//                    }
                 }
             }
         }

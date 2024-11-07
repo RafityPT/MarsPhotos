@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +34,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.material3.Text
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -58,7 +58,7 @@ fun PicsumHomeScreen(
 @Composable
 fun  PicsumLoadingScreen(modifier: Modifier = Modifier) {
     Image(
-        modifier = modifier.size(200.dp),
+        modifier = modifier.heightIn(max = 100.dp),
         painter = painterResource(R.drawable.loading_img),
         contentDescription = stringResource(R.string.loading)
     )
@@ -82,7 +82,7 @@ fun PicsumResultScreen(photos: String, randomPhoto: PicsumPhoto, modifier: Modif
             contentDescription = "A photo",
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 100.dp, max = 300.dp)
+                .heightIn(max = 150.dp)
                 .padding(bottom = 15.dp))
     }
 }

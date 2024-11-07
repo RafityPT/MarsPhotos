@@ -59,7 +59,7 @@ fun HomeScreen(
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Image(
-        modifier = modifier.size(200.dp),
+        modifier = modifier.heightIn(max = 100.dp),
         painter = painterResource(R.drawable.loading_img),
         contentDescription = stringResource(R.string.loading)
     )
@@ -83,7 +83,7 @@ fun ResultScreen(photos: String, randomPhoto: MarsPhoto, modifier: Modifier = Mo
             contentDescription = "A photo",
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 200.dp, max = 300.dp)
+                .heightIn(max = 150.dp)
                 .padding(bottom = 10.dp))
     }
 }
